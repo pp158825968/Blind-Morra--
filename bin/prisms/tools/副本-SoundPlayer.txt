@@ -1,0 +1,198 @@
+package prisms.tools
+{
+	import prisms.models.BaseRetoldObject;
+	
+	/**
+	 * 声音播放工具类
+	 * <br/>
+	 * 重点还是在于mp3的播放设计
+	 */
+	public class SoundPlayer extends BaseRetoldObject
+	{
+		/**
+		 * 声音播放工具类
+		 * <br/>
+	 	 * 重点还是在于mp3的播放设计
+		 */
+		public function SoundPlayer()
+		{
+			super();
+		}
+		
+		//////////////////
+		//嵌入的音效文件
+		//每个音效有一个字符串作为播放文件的标识
+		/////////////////
+		[Embed(source="media/audios/InLand.mp3")]
+		private static var HitMovingLandOnSound:Class;
+		
+		public static const HIT_MOVINGLAND_ON:String = "踩到陆地";
+		
+		
+		[Embed(source="media/audios/InLandMiss.mp3")]
+		private static var HitMovingLandOutSound:Class;
+		
+		public static const HIT_MOVINGLAND_OUT:String = "踩偏陆地";
+		
+		
+		[Embed(source="media/audios/GetFood.mp3")]
+		private static var EatFoodSound:Class;
+		
+		public static const EAT_FOOD:String = "吃到食物";
+		
+		
+		[Embed(source="media/audios/GetItem.mp3")]
+		private static var GetItemSound:Class;
+		
+		public static const GET_ITEM:String = "道具拾取音效";
+		
+		
+		[Embed(source="media/audios/DosJump.mp3")]
+		private static var DosJumpSound:Class;
+		
+		public static const DOS_JUMP:String = "二级跳";
+		
+		[Embed(source="media/audios/Jump.mp3")]
+		private static var JumpSound:Class;
+		
+		public static const JUMP:String = "起跳";
+		
+		[Embed(source="media/audios/Died.mp3")]
+		private static var DiedSound:Class;
+		
+		public static const DIED:String = "死亡音效";
+		
+		[Embed(source="media/audios/TransformOn.mp3")]
+		private static var TransformOnSound:Class;
+		
+		public static const TRANSFORM_ON:String = "星星变形";
+		
+		
+		[Embed(source="media/audios/TransformOff.mp3")]
+		private static var TransformOffSound:Class;
+		
+		public static const TRANSFORM_OFF:String = "星星变形";
+		
+		[Embed(source="media/audios/BulletHitRocket.mp3")]
+		private static var BulletHitRocketSound:Class;
+		
+		public static const BULLET_HIT_ROCKET:String = "子弹击中火箭";
+		
+		[Embed(source="media/audios/BulletHitStar.mp3")]
+		private static var BulletHitStarSound:Class;
+		
+		public static const BULLET_HIT_STAR:String = "子弹击中星星";
+		
+		[Embed(source="media/audios/DDF.mp3")]
+		private static var TheDeepDarkFantasy:Class;
+		
+		public static const THE_DEEP_DARK_FANTASY:String = "深黑幻想";
+		
+		[Embed(source="media/audios/AkaLin.mp3")]
+		private static const AkaLinSound:Class;
+		
+		public static const A_KA_LIN:String = "阿卡林~";
+		
+		
+		[Embed(source="media/audios/CountDown.mp3")]
+		private static const CountDownSound:Class;
+		
+		public static const COUNT_DOWN:String = "count down";
+		
+		
+		
+		//主题曲
+		[Embed(source="media/audios/Claris - Don't Cry.mp3")]
+		private static var OpeningSongSound:Class;
+		
+		public static const OPEN_SONG:String = "Don't Cry_ClariS";
+		
+		/**
+		 * 作为音效库使用
+		 */ 
+		private static var audioSources:Dictionary = new Dictionary(true);
+		
+		/**
+		 * 存放声道的库
+		 * 用于停止播放音效的时候使用
+		 */ 
+		private static var channelDictionary:Dictionary = new Dictionary(true);
+		
+		/**
+		 * 初始化音效素材
+		 * 让标识与嵌入的音效文件建立联系
+		 */ 
+		private static function initSource():void
+		{
+			// 应该研究兼容的播放api了
+			audioSources[HIT_MOVINGLAND_ON] = new HitMovingLandOnSound();
+			audioSources[HIT_MOVINGLAND_OUT] = new HitMovingLandOutSound();
+			audioSources[EAT_FOOD] = new EatFoodSound();
+			audioSources[GET_ITEM] = new GetItemSound();
+			audioSources[DOS_JUMP] = new DosJumpSound();
+			audioSources[JUMP] = new JumpSound();
+			audioSources[DIED] = new DiedSound();
+			audioSources[TRANSFORM_ON] = new TransformOnSound();
+			audioSources[TRANSFORM_OFF] = new TransformOffSound();
+			audioSources[BULLET_HIT_ROCKET] = new BulletHitRocketSound();
+			audioSources[BULLET_HIT_STAR] = new BulletHitStarSound();
+			audioSources[THE_DEEP_DARK_FANTASY] = new TheDeepDarkFantasy();
+			
+			audioSources[OPEN_SONG] = new OpeningSongSound();
+			audioSources[A_KA_LIN] = new AkaLinSound();
+			audioSources[COUNT_DOWN] = new CountDownSound();
+		}
+		
+		//播放方法
+		
+		/**
+		 * 音效的声道实例
+		 */ 
+		private var audioChannel:SoundChannel;
+		/**
+		 * 播放音效
+		 */
+		public function playAudio(audioName:String, isLoop:Boolean = false):void
+		{
+			//实现声音的播放
+			var sound:Sound = audioSources[audioName];
+			var sc:SoundChannel = sound.play(0, isLoop ? 999: 0);
+			
+			//声道集合的建立
+			var arr:Array = channelDictionary[audioName];
+			if(arr && arr.length > 0)
+			{
+				arr.push(sc);
+			}
+			else
+			{
+				channelDictionary[audioName] = [sc];
+			}
+		}
+		
+		/**
+		 * 停止播放音效
+		 */ 
+		public function stopAudio(audioName:String):void
+		{
+			//获取要停止的声道实例
+			var arr:Array = channelDictionary[audioName];
+			
+			if(arr && arr.length > 0)
+			{
+				for (var i:int = 0; i < arr.length; i++) 
+				{
+					var sc:SoundChannel = arr[i];
+					if(sc) sc.stop();
+				}
+			}
+			
+			//为了避免以后变量临时数组arr过多
+			//每次停止播放之后 都去置空合集
+			channelDictionary[audioName] = [];
+			
+		}
+	}
+}
+
+		
