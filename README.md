@@ -16,3 +16,9 @@ BlindMorra.as以及LayaBoxBlindMorra.as
 当要使用LayaBox引擎时 请将LayaBoxBlindMorra.as文件设为默认的应用程序(文档类) 
 
 并且按照LayaBox下的相关操作要求完成调试 具体看https://ldc.layabox.com/doc/?nav=zh-as-1-0-1
+
+在线也能猜拳啦 请点击
+
+Flash版 http://pp158825968.web3v.com
+
+H5版 http://pp158825968.web3v.com/h5/LayaBoxBlindMorra.max.html
