@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>BlindMorra</name>
+	<name>GameMain</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,16 +14,4 @@
 	<natures>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>[source path] libs</name>
-			<type>2</type>
-			<location>E:/Aria/Flash  AIR  ActionScript 3.0/LayaBox/lib/as/libs</location>
-		</link>
-		<link>
-			<name>[source path] src</name>
-			<type>2</type>
-			<location>E:/Aria/Flash  AIR  ActionScript 3.0/LayaBox/lib/as/LayaAirFlash/flash/src</location>
-		</link>
-	</linkedResources>
 </projectDescription>
